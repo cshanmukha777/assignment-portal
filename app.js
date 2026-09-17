@@ -13,6 +13,22 @@ app.get("/", (req, res) => {
         message: "Assignment Portal API is running"
     });
 });
+app.get("/assignments", async (req, res) => {
+    try {
+        const result = await pool.query(
+            `SELECT * FROM assignments
+             ORDER BY id DESC`
+        );
+
+        res.json(result.rows);
+    } catch (error) {
+        console.error(error);
+
+        res.status(500).json({
+            message: "Internal server error"
+        });
+    }
+});
 app.post("/assignments", async (req, res) => {
     try {
         const { title, deadline } = req.body;

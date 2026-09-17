@@ -15,6 +15,35 @@ app.get("/", (req, res) => {
 });
 app.get("/assignments", async (req, res) => {
     try {
+        const { submitted } = req.query;
+
+        if (submitted === "true") {
+            const result = await pool.query(
+                `SELECT * FROM assignments
+                 WHERE submitted = $1
+                 ORDER BY id DESC`,
+                [true]
+            );
+
+            return res.json(result.rows);
+        }
+
+        const result = await pool.query(
+            `SELECT * FROM assignments
+             ORDER BY id DESC`
+        );
+
+        res.json(result.rows);
+    } catch (error) {
+        console.error(error);
+
+        res.status(500).json({
+            message: "Internal server error"
+        });
+    }
+});
+app.get("/assignments", async (req, res) => {
+    try {
         const result = await pool.query(
             `SELECT * FROM assignments
              ORDER BY id DESC`

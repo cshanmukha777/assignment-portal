@@ -71,12 +71,12 @@ app.post("/assignments", async (req, res) => {
 
         res.status(201).json(result.rows[0]);
     } catch (error) {
-        console.error(error);
+    console.error("POST /assignments ERROR:", error);
 
-        res.status(500).json({
-            message: "Internal server error"
-        });
-    }
+    res.status(500).json({
+        message: error.message
+    });
+}
 });
 app.patch("/assignments/:id", async (req, res) => {
     try {
